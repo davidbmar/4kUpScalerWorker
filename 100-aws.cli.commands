@@ -1,0 +1,12 @@
+#/bin/bash
+aws s3api put-bucket-notification-configuration --bucket davidmar.test --notification-configuration '{
+  "QueueConfigurations": [
+    {
+      "Id": "davidmar-test-sqs-queue-configuration-1",
+      "QueueArn": "arn:aws:sqs:us-west-2:821850226835:davidmar-test-sqs-queue",
+      "Events": [
+        "s3:ObjectCreated:Put"
+      ]
+    }
+  ]
+}'
