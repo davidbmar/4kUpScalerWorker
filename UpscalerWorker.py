@@ -5,6 +5,7 @@
 import boto3
 import json
 import os
+from s3_utils import upload_file_to_s3
 
 # Create an SQS client and s3 client.
 sqs = boto3.client('sqs')
@@ -63,13 +64,24 @@ for message in response.get('Messages', []):
     output=stream.read()
     print (output)
 
-#    # now upload to the S3 bucket.
-#    source_filename=full_path_output_filename
-#    bucket="davidmar.test.upscaled"
-#    target_key="processed."+object_key
-#    s3.upload_file(source_filename,bucket,target_key)
-#
+###############################################
+# Now upload to the S3 bucket.
+###############################################
+    # set the directory path and filename of the file to be uploaded
+    file_path = output_prefix + object_key 
+    
+    # set the S3 bucket name and key where the file will be uploaded
+    bucket_name = "davidmar.test.upscaled"
+    key_name = object_key 
+    
+    # upload the file to the S3 bucket
+    upload_file_to_s3(file_path, bucket_name, key_name)
 
+###############################################
+# Now assuming all worked properly you want to delete from the SQS queue.
+###############################################
+    
     # Delete the message from the SQS queue
     sqs.delete_message(QueueUrl=queue_url, ReceiptHandle=message['ReceiptHandle'])
+
 
