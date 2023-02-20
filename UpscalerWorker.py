@@ -1,5 +1,5 @@
-#!/Users/davidmar/opt/anaconda3/bin/python3
-##!/invokeai/.venv/bin/python3
+#!/invokeai/.venv/bin/python3
+##!/Users/davidmar/opt/anaconda3/bin/python3
 #queue_url = sqs.get_queue_url(QueueName='davidmar-test-sqs-queue')['QueueUrl']
 #
 import boto3
@@ -53,16 +53,23 @@ for message in response.get('Messages', []):
         os.makedirs(output_prefix)
 
     input_filename=input_prefix+object_key
-    output_filename=output_prefix+object_key+".processed"
+    output_filename=output_prefix+"processed."+object_key
     print("input_filename:"+input_filename)
     print("output filename:"+output_filename)
 
-    input_file=open(input_filename,"rb")
-    output_file=open(output_filename,"wb")
-    for line in input_file:
-        output_file.write(line)
-    input_file.close()  
-    output_file.close()
+#    input_file=open(input_filename,"rb")
+#    output_file=open(output_filename,"wb")
+#    for line in input_file:
+#        output_file.write(line)
+#    input_file.close()  
+#    output_file.close()
+
+#Usage: python inference_realesrgan.py -n RealESRGAN_x4plus -i infile -o outfile [options]...
+    stream = os.popen("python /4kUpScalerWorker/Real-ESRGAN/inference_realesrgan.py -n RealESRGAN_x4plus -i "+input_filename+" -o "+output_filename) 
+    output=stream.read()
+
+
+
 
     # Delete the message from the SQS queue
     sqs.delete_message(QueueUrl=queue_url, ReceiptHandle=message['ReceiptHandle'])
