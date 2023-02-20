@@ -24,4 +24,4 @@ unzip awscliv2.zip
 #Copy over scripts for client work.
 # We need Boto
 pip3 install boto3
-
+git clone https://github.com/davidbmar/4kUpScalerWorker.git
