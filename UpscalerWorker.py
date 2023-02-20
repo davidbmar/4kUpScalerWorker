@@ -57,17 +57,18 @@ for message in response.get('Messages', []):
     print("input_filename:"+full_path_input_filename)
     print("output filename:"+full_path_output_filename)
 
-#Usage: python inference_realesrgan.py -n RealESRGAN_x4plus -i infile -o outfile [options]...
-    print("python /4kUpScalerWorker/Real-ESRGAN/inference_realesrgan.py -n RealESRGAN_x4plus -i s3_download_directory/"+object_key+" -o processed_directory/processed."+object_key) 
-    stream = os.popen("python /4kUpScalerWorker/Real-ESRGAN/inference_realesrgan.py -n RealESRGAN_x4plus -i s3_download_directory/"+object_key+" -o processed_directory/processed."+object_key) 
+##Usage: python inference_realesrgan.py -n RealESRGAN_x4plus -i infile -o outfile [options]...
+    print ("python /4kUpScalerWorker/Real-ESRGAN/inference_realesrgan.py -n RealESRGAN_x4plus -i s3_download_directory/"+object_key+" -o processed_directory") 
+    stream = os.popen("python /4kUpScalerWorker/Real-ESRGAN/inference_realesrgan.py -n RealESRGAN_x4plus -i s3_download_directory/"+object_key+" -o processed_directory") 
     output=stream.read()
+    print (output)
 
-    # now upload to the S3 bucket.
-    source_filename=full_path_output_filename
-    bucket="davidmar.test.upscaled"
-    target_key="processed."+object_key
-    s3.upload_file(source_filename,bucket,target_key)
-
+#    # now upload to the S3 bucket.
+#    source_filename=full_path_output_filename
+#    bucket="davidmar.test.upscaled"
+#    target_key="processed."+object_key
+#    s3.upload_file(source_filename,bucket,target_key)
+#
 
     # Delete the message from the SQS queue
     sqs.delete_message(QueueUrl=queue_url, ReceiptHandle=message['ReceiptHandle'])
