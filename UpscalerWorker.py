@@ -52,23 +52,21 @@ for message in response.get('Messages', []):
     if not os.path.exists(output_prefix):
         os.makedirs(output_prefix)
 
-    input_filename=input_prefix+object_key
-    output_filename=output_prefix+"processed."+object_key
-    print("input_filename:"+input_filename)
-    print("output filename:"+output_filename)
-
-#    input_file=open(input_filename,"rb")
-#    output_file=open(output_filename,"wb")
-#    for line in input_file:
-#        output_file.write(line)
-#    input_file.close()  
-#    output_file.close()
+    full_path_input_filename=input_prefix+object_key
+    full_path_output_filename=output_prefix+"processed."+object_key
+    print("input_filename:"+full_path_input_filename)
+    print("output filename:"+full_path_output_filename)
 
 #Usage: python inference_realesrgan.py -n RealESRGAN_x4plus -i infile -o outfile [options]...
-    stream = os.popen("python /4kUpScalerWorker/Real-ESRGAN/inference_realesrgan.py -n RealESRGAN_x4plus -i "+input_filename+" -o "+output_filename) 
+    print("python /4kUpScalerWorker/Real-ESRGAN/inference_realesrgan.py -n RealESRGAN_x4plus -i s3_download_directory/"+object_key+" -o processed_directory/processed."+object_key) 
+    stream = os.popen("python /4kUpScalerWorker/Real-ESRGAN/inference_realesrgan.py -n RealESRGAN_x4plus -i s3_download_directory/"+object_key+" -o processed_directory/processed."+object_key) 
     output=stream.read()
 
-
+    # now upload to the S3 bucket.
+    source_filename=full_path_output_filename
+    bucket="davidmar.test.upscaled"
+    target_key="processed."+object_key
+    s3.upload_file(source_filename,bucket,target_key)
 
 
     # Delete the message from the SQS queue

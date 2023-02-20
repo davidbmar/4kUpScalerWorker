@@ -1,0 +1,6 @@
+alESRGAN_x4plus -i s3_download_directory/myfile.png -o processed_directory/processed.myfile.png
+Testing 0 myfile
+Error CUDA out of memory. Tried to allocate 1.72 GiB (GPU 0; 7.80 GiB total capacity; 1.78 GiB already allocated; 1.44 GiB free; 2.11 GiB reserved in total by PyTorch) If reserved memory is >> allocated memory try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
+If you encounter CUDA out of memory, try to set --tile with a smaller number.
+root@01c328959965:/4kUpScalerWorker# vi error.txt
+
