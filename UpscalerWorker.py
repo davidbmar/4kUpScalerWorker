@@ -5,6 +5,7 @@
 import boto3
 import json
 import os
+import subprocess
 from s3_utils import upload_file_to_s3
 
 # Create an SQS client and s3 client.
@@ -59,11 +60,15 @@ for message in response.get('Messages', []):
     print("output filename:"+full_path_output_filename)
 
 ##Usage: python inference_realesrgan.py -n RealESRGAN_x4plus -i infile -o outfile [options]...
-    print ("python /4kUpScalerWorker/Real-ESRGAN/inference_realesrgan.py -n RealESRGAN_x4plus -i s3_download_directory/"+object_key+" -o processed_directory") 
-    stream = os.popen("python /4kUpScalerWorker/Real-ESRGAN/inference_realesrgan.py -n RealESRGAN_x4plus -i s3_download_directory/"+object_key+" -o processed_directory") 
-    output=stream.read()
-    print (output)
+    command="/invokeai/.venv/bin/python /4kUpScalerWorker/Real-ESRGAN/inference_realesrgan.py -n RealESRGAN_x4plus -i s3_download_directory/"+object_key+" -o processed_directory" 
+    print (command)
+    try:
+        output = subprocess.check_output(command, shell=True) # note this is a security hole.
+    except subprocess.CalledProcessError as e:
+        raise Exception(f'command failed with return code {e.returncode}: {e.output.decode()}')
+    print (output.decode())
 
+    print ("Completed Image processing\n")
 ###############################################
 # Now upload to the S3 bucket.
 ###############################################
