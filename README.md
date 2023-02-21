@@ -26,4 +26,6 @@ copy in : config and credentials.
 But ultimately, you need access to pull off the SQS queue, and pull from the S3 buckets.
 
 For git to checkin you will also want to have a token for git hub.
-``git remote set-url origin https://<<USERNAME>>:<<TOKEN>>@github.com/davidbmar/4kUpScalerWorker.git``
+``
+git remote set-url origin https://<<USERNAME>>:<<TOKEN>>@github.com/davidbmar/4kUpScalerWorker.git
+``
