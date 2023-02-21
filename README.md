@@ -13,7 +13,7 @@ This helps me spawn workers given an S3 directory.
 When the S3 directory has a PUT to it, then it puts this to a SQS Queue.
 The Queue then can be pulled from a worker.
 
-# Run Proceedure
+# Run Procedure
 To set this up do the following steps.
 1.  Open up runpod.io
 2.  Select the invokeAi image
